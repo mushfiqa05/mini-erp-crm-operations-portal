@@ -1,0 +1,192 @@
+{
+  "info": {
+    "_postman_id": "mini-erp-crm-collection-2026",
+    "name": "Mini ERP + CRM Operations Portal API",
+    "description": "Postman API Collection for testing Mini ERP + CRM Portal REST APIs including Login, Role checks, Customers CRM, Products, Inventory, and Sales Challans workflow with stock transactions.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "1. Login (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@fundsroom.com\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "2. Login (Sales)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"sales@fundsroom.com\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "3. Get Active User Profile (/me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customer CRM",
+      "item": [
+        {
+          "name": "List Customers (Search & Filter)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/customers?search=Apex&status=Active", "host": ["{{baseUrl}}"], "path": ["customers"], "query": [{ "key": "search", "value": "Apex" }, { "key": "status", "value": "Active" }] }
+          }
+        },
+        {
+          "name": "Create Customer",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_name\": \"Karan Logistics\",\n  \"mobile\": \"9811122334\",\n  \"email\": \"contact@karanlogistics.com\",\n  \"business_name\": \"Karan Logistics Pvt Ltd\",\n  \"gst_number\": \"27DDD4444D1Z9\",\n  \"customer_type\": \"Distributor\",\n  \"address\": \"78 Freight Hub, Pune\",\n  \"status\": \"Active\",\n  \"notes\": \"Key regional transport partner.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/customers", "host": ["{{baseUrl}}"], "path": ["customers"] }
+          }
+        },
+        {
+          "name": "Add Follow-up Note",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"note\": \"Discussed annual subscription renewal and unit volume pricing.\",\n  \"follow_up_date\": \"2026-08-25\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/customers/1/followups", "host": ["{{baseUrl}}"], "path": ["customers", "1", "followups"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products & Inventory",
+      "item": [
+        {
+          "name": "List Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/products", "host": ["{{baseUrl}}"], "path": ["products"] }
+          }
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_name\": \"Ultra Slim Wireless Mouse\",\n  \"sku\": \"PROD-MOUSE-01\",\n  \"category\": \"Computer Accessories\",\n  \"unit_price\": 799.00,\n  \"current_stock\": 30,\n  \"minimum_stock\": 10,\n  \"warehouse_location\": \"Warehouse A-3\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/products", "host": ["{{baseUrl}}"], "path": ["products"] }
+          }
+        },
+        {
+          "name": "Log Stock Movement (IN / OUT)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_id\": 1,\n  \"quantity\": 20,\n  \"movement_type\": \"IN\",\n  \"reason\": \"New shipment stock addition\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/inventory/movements", "host": ["{{baseUrl}}"], "path": ["inventory", "movements"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sales Challans Workflow",
+      "item": [
+        {
+          "name": "1. Create Draft Challan (Stock Unchanged)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 1,\n  \"items\": [\n    { \"product_id\": 1, \"quantity\": 5 },\n    { \"product_id\": 3, \"quantity\": 10 }\n  ]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/challans", "host": ["{{baseUrl}}"], "path": ["challans"] }
+          }
+        },
+        {
+          "name": "2. Confirm Challan (Reduces Stock & Logs OUT Movement)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/challans/1/confirm", "host": ["{{baseUrl}}"], "path": ["challans", "1", "confirm"] }
+          }
+        },
+        {
+          "name": "3. Insufficient Stock Confirmation Test (Fails & Prevents Negative Stock)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 1,\n  \"items\": [\n    { \"product_id\": 2, \"quantity\": 500 }\n  ]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/challans", "host": ["{{baseUrl}}"], "path": ["challans"] }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api" },
+    { "key": "token", "value": "" }
+  ]
+}
