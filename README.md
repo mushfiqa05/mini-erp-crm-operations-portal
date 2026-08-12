@@ -171,7 +171,7 @@ npm run db:setup
 | :--- | :--- | :--- |
 | `PORT` | HTTP Port for Express Server | `5000` |
 | `DATABASE_URL` | PostgreSQL connection string | `postgres://postgres:password@localhost:5432/minierp_db` |
-| `JWT_SECRET` | Secret key for signing JWT tokens | `super_secret_jwt_key_fundsroom_2026` |
+| `JWT_SECRET` | Secret key for signing JWT tokens | `JWT_SECRET=replace_with_a_secure_local_secret` |
 | `FRONTEND_URL` | CORS allowed origin URL | `http://localhost:5173` |
 | `NODE_ENV` | Environment mode (`development` / `production`) | `development` |
 
